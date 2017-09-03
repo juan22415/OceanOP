@@ -25,6 +25,8 @@ public class BoatController : Boyancy{
 	private Vector3 m_androidInputInit;
 
     x360_Gamepad gamepad;
+    [SerializeField]
+    private GameObject Scope;
 
     protected override void Start()
     {
@@ -49,7 +51,9 @@ public class BoatController : Boyancy{
         gamepad = GamepadManager.Instance.GetGamepad(1);
         setInputs(gamepad.GetTrigger_R, Input.GetAxisRaw("Horizontal"));
 
-        
+        Scope.transform.eulerAngles = new Vector3(Scope.transform.eulerAngles.x - gamepad.GetStick_R().Y, Scope.transform.eulerAngles.y + gamepad.GetStick_R().X);
+
+        //Scope.transform.position = new Vector3(Scope.transform.position.x + gamepad.GetStick_R().X, Scope.transform.position.y + gamepad.GetStick_R().Y,Scope.transform.position.z);
 
         // Si no hay control conectado
         //setInputs(Input.GetAxisRaw("Vertical"), Input.GetAxisRaw("Horizontal"));
