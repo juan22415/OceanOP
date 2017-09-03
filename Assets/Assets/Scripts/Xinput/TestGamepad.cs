@@ -39,16 +39,16 @@ public class TestGamepad : MonoBehaviour
 
 		// Sample code to test button input and rumble
 		if (gamepad.GetButtonDown("A")) {
-			//TestRumble();
+			TestRumble();
 			Debug.Log("A down");
 		}
-	}
+    }
 
 	// Send some rumble events to the gamepad
 	void TestRumble()
 	{
 		//                timer            power         fade
 		gamepad.AddRumble(1.0f, new Vector2(0.9f, 0.9f), 0.5f);
-		//gamepad.AddRumble(2.5f, new Vector2(0.5f, 0.5f), 0.2f);
 	}
+
 }

@@ -24,6 +24,8 @@ public class BoatController : Boyancy{
     private Rigidbody m_rigidbody;
 	private Vector3 m_androidInputInit;
 
+    x360_Gamepad gamepad;
+
     protected override void Start()
     {
         base.Start();
@@ -44,18 +46,24 @@ public class BoatController : Boyancy{
 
 	void Update()
 	{
-		//#if UNITY_EDITOR 
-		setInputs (Input.GetAxisRaw("Vertical"), Input.GetAxisRaw("Horizontal"));
-		//#elif UNITY_ANDROID
-		//Vector3 touchInput = Input.acceleration - m_androidInputInit;
-		
-		//if (touchInput.sqrMagnitude > 1)
-		//	touchInput.Normalize();
-		
-		//setInputs (-touchInput.y, touchInput.x);
-		//#endif
+        gamepad = GamepadManager.Instance.GetGamepad(1);
+        setInputs(gamepad.GetTrigger_R, Input.GetAxisRaw("Horizontal"));
 
-	}
+
+        // Si no hay control conectado
+        //setInputs(Input.GetAxisRaw("Vertical"), Input.GetAxisRaw("Horizontal"));
+
+        //#if UNITY_EDITOR
+        //#elif UNITY_ANDROID
+        //Vector3 touchInput = Input.acceleration - m_androidInputInit;
+
+        //if (touchInput.sqrMagnitude > 1)
+        //	touchInput.Normalize();
+
+        //setInputs (-touchInput.y, touchInput.x);
+        //#endif
+
+    }
 
 	public void setInputs(float iVerticalInput, float iHorizontalInput)
 	{
