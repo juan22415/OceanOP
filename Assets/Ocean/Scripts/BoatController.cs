@@ -49,6 +49,7 @@ public class BoatController : Boyancy{
         gamepad = GamepadManager.Instance.GetGamepad(1);
         setInputs(gamepad.GetTrigger_R, Input.GetAxisRaw("Horizontal"));
 
+        
 
         // Si no hay control conectado
         //setInputs(Input.GetAxisRaw("Vertical"), Input.GetAxisRaw("Horizontal"));
