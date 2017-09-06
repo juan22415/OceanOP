@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class BoatController : Boyancy{
 
-	[Header("Physic :")]
+    [Header("Physic :")]
 	[SerializeField] private float m_accelerationFactor = 2.0F;
 	[SerializeField] private float m_turningFactor = 2.0F;
 	[SerializeField] private float m_accelerationTorqueFactor = 35F;
@@ -16,7 +16,12 @@ public class BoatController : Boyancy{
 	[SerializeField] private float m_boatAudioMinPitch = 0.4F;
 	[SerializeField] private float m_boatAudioMaxPitch = 1.2F;
 
-	[Header("Other :")]
+    [Header("Xinput :")]
+    x360_Gamepad gamepad;
+    [SerializeField] private GameObject Scope;
+    [SerializeField] private int controlNumber;
+
+    [Header("Other :")]
 	[SerializeField] private List<GameObject> m_motors;
 
 	private float m_verticalInput = 0F;
@@ -24,9 +29,7 @@ public class BoatController : Boyancy{
     private Rigidbody m_rigidbody;
 	private Vector3 m_androidInputInit;
 
-    x360_Gamepad gamepad;
-    [SerializeField]
-    private GameObject Scope;
+    
 
     protected override void Start()
     {
@@ -48,8 +51,13 @@ public class BoatController : Boyancy{
 
 	void Update()
 	{
-        gamepad = GamepadManager.Instance.GetGamepad(1);
-        setInputs(gamepad.GetTrigger_R, Input.GetAxisRaw("Horizontal"));
+        gamepad = GamepadManager.Instance.GetGamepad(controlNumber);
+        if(gamepad.GetTrigger_L > 0)
+
+             setInputs(-gamepad.GetTrigger_L, Input.GetAxisRaw("Horizontal"));
+
+        else
+            setInputs(gamepad.GetTrigger_R, Input.GetAxisRaw("Horizontal"));
 
         Scope.transform.eulerAngles = new Vector3(Scope.transform.eulerAngles.x - gamepad.GetStick_R().Y, Scope.transform.eulerAngles.y + gamepad.GetStick_R().X);
 
@@ -80,6 +88,7 @@ public class BoatController : Boyancy{
 	{
 		base.FixedUpdate();
 
+      
 		m_rigidbody.AddRelativeForce(Vector3.forward * m_verticalInput * m_accelerationFactor);
         m_rigidbody.AddRelativeTorque(
 			m_verticalInput * -m_accelerationTorqueFactor,
