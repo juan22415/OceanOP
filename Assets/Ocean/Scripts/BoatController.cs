@@ -54,10 +54,10 @@ public class BoatController : Boyancy{
         gamepad = GamepadManager.Instance.GetGamepad(controlNumber);
         if(gamepad.GetTrigger_L > 0)
 
-             setInputs(-gamepad.GetTrigger_L, Input.GetAxisRaw("Horizontal"));
+             setInputs(-gamepad.GetTrigger_L, gamepad.GetStick_L().X);
 
         else
-            setInputs(gamepad.GetTrigger_R, Input.GetAxisRaw("Horizontal"));
+            setInputs(gamepad.GetTrigger_R, gamepad.GetStick_L().X);
 
         Scope.transform.eulerAngles = new Vector3(Scope.transform.eulerAngles.x - gamepad.GetStick_R().Y, Scope.transform.eulerAngles.y + gamepad.GetStick_R().X);
 
