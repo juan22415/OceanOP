@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ActivateExplosion : MonoBehaviour {
 
+    private bool lightFading;
     [SerializeField] GameObject explosion;
     Rigidbody _rigidbody;
     [SerializeField] AudioClip explosionSound;
@@ -18,6 +19,16 @@ public class ActivateExplosion : MonoBehaviour {
         _audioSource = GetComponent<AudioSource>();
         
     }
+
+    private void Update()
+    {
+        if (lightFading==true)
+        {
+            explosion.GetComponent<Light>().intensity -= 0.1f;
+            _audioSource.volume -= 0.01f;
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         GetComponent<CapsuleCollider>().enabled = false;
@@ -28,7 +39,8 @@ public class ActivateExplosion : MonoBehaviour {
         _audioSource.clip = explosionSound;
         _audioSource.Play();
         GetComponent<CapsuleCollider>().enabled = false;
-
+        lightFading = true;
         Destroy(gameObject, 3);
     }
+
 }

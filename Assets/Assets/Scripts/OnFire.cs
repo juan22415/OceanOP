@@ -6,25 +6,16 @@ public class OnFire : MonoBehaviour {
     public GameObject firstState;
     public GameObject secondState;
     public GameObject finalState;
+    public AudioSource _audioSource;
+    public int counterState;
 
     public Light firstStateLight;
     public Light secondStateLight;
     public Light finalStateLight;
     [SerializeField]
     private float duration = 1.0F;
-    public int counterState;
+    private float targetIntensity=4f;
 
-      private float targetIntensity=4f;
-
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-       
-    }
     private void OnCollisionEnter(Collision collision)
     {
       
@@ -36,16 +27,19 @@ public class OnFire : MonoBehaviour {
                     {
                         firstState.SetActive(true);
                         firstStateLight.intensity = Mathf.PingPong(Time.time, targetIntensity);
-                    }
+                        _audioSource.volume = 0.3f;
+            }
                     if (counterState == 2)
                     {
                         secondState.SetActive(true);
                         secondStateLight.intensity = Mathf.PingPong(Time.time, targetIntensity);
+                        _audioSource.volume = 0.7f;
             }
                     if (counterState == 3)
                     {
                         finalState.SetActive(true);
                         finalStateLight.intensity = Mathf.PingPong(Time.time, targetIntensity);
+                        _audioSource.volume = 1;
             }
                 }
         
