@@ -7,8 +7,7 @@ public class OnFire : MonoBehaviour {
     public GameObject secondState;
     public GameObject finalState;
     public int counterState;
-    private bool isColliding;
-
+    
     // Use this for initialization
     void Start () {
 		
@@ -16,13 +15,11 @@ public class OnFire : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        isColliding = false;
+       
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (isColliding) return;
-        {
-            isColliding = true;
+      
         
                 if (collision.gameObject.CompareTag("bullet"))
                 {
@@ -40,6 +37,6 @@ public class OnFire : MonoBehaviour {
                         finalState.SetActive(true);
                     }
                 }
-        }
+        
     }
 }
