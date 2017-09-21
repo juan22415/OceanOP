@@ -10,9 +10,12 @@ public class OnFire : MonoBehaviour {
     public Light firstStateLight;
     public Light secondStateLight;
     public Light finalStateLight;
-    public float duration = 1.0F;
+    [SerializeField]
+    private float duration = 1.0F;
     public int counterState;
-    
+
+      private float targetIntensity=4f;
+
     // Use this for initialization
     void Start () {
 		
@@ -32,18 +35,18 @@ public class OnFire : MonoBehaviour {
                     if(counterState==1)
                     {
                         firstState.SetActive(true);
-                        float phi = Time.time / duration* 2 * Mathf.PI;
-                        float amplitude = Mathf.Cos(phi) * 0.5F + 0.5F;
-                        finalStateLight.intensity = amplitude;
-            }
+                        firstStateLight.intensity = Mathf.PingPong(Time.time, targetIntensity);
+                    }
                     if (counterState == 2)
                     {
                         secondState.SetActive(true);
-                    }
+                        secondStateLight.intensity = Mathf.PingPong(Time.time, targetIntensity);
+            }
                     if (counterState == 3)
                     {
                         finalState.SetActive(true);
-                    }
+                        finalStateLight.intensity = Mathf.PingPong(Time.time, targetIntensity);
+            }
                 }
         
     }
