@@ -6,6 +6,11 @@ public class OnFire : MonoBehaviour {
     public GameObject firstState;
     public GameObject secondState;
     public GameObject finalState;
+
+    public Light firstStateLight;
+    public Light secondStateLight;
+    public Light finalStateLight;
+    public float duration = 1.0F;
     public int counterState;
     
     // Use this for initialization
@@ -27,7 +32,10 @@ public class OnFire : MonoBehaviour {
                     if(counterState==1)
                     {
                         firstState.SetActive(true);
-                    }
+                        float phi = Time.time / duration* 2 * Mathf.PI;
+                        float amplitude = Mathf.Cos(phi) * 0.5F + 0.5F;
+                        finalStateLight.intensity = amplitude;
+            }
                     if (counterState == 2)
                     {
                         secondState.SetActive(true);
