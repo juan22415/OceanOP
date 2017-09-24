@@ -29,6 +29,9 @@ public class BoatController : Boyancy{
     private Rigidbody m_rigidbody;
 	private Vector3 m_androidInputInit;
 
+    public float angleX;
+    public float angleY;
+
     
 
     protected override void Start()
@@ -59,22 +62,17 @@ public class BoatController : Boyancy{
         else
             setInputs(gamepad.GetTrigger_R, gamepad.GetStick_L().X);
 
-        Scope.transform.eulerAngles = new Vector3(Scope.transform.eulerAngles.x - gamepad.GetStick_R().Y, Scope.transform.eulerAngles.y + gamepad.GetStick_R().X);
+            angleX =Scope.transform.eulerAngles.x - gamepad.GetStick_R().Y;
+            angleY =Scope.transform.eulerAngles.y + gamepad.GetStick_R().X;
 
-        //Scope.transform.position = new Vector3(Scope.transform.position.x + gamepad.GetStick_R().X, Scope.transform.position.y + gamepad.GetStick_R().Y,Scope.transform.position.z);
+            Scope.transform.eulerAngles = new Vector3(angleX, angleY);
 
-        // Si no hay control conectado
-        //setInputs(Input.GetAxisRaw("Vertical"), Input.GetAxisRaw("Horizontal"));
 
-        //#if UNITY_EDITOR
-        //#elif UNITY_ANDROID
-        //Vector3 touchInput = Input.acceleration - m_androidInputInit;
 
-        //if (touchInput.sqrMagnitude > 1)
-        //	touchInput.Normalize();
 
-        //setInputs (-touchInput.y, touchInput.x);
-        //#endif
+
+
+
 
     }
 
