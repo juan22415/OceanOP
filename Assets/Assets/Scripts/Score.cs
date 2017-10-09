@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Score : MonoBehaviour {
 
+    public Image colorimagen;
     public Text scoreText;
     public Text winnerText;
 
@@ -17,6 +18,7 @@ public class Score : MonoBehaviour {
         if(other.CompareTag("Flag"))
         {
             score++;
+            colorimagen.fillAmount += 0.33f;
             scoreText.text = score.ToString();
             CheckWinner(score);
         }

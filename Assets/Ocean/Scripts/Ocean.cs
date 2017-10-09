@@ -161,7 +161,7 @@ public class Ocean : MonoBehaviour
 	private float prevValue = 0.1f;
 	private float nextValue = 0.4f;
 	private float prevTime = 1;
-	private const float timeFreq = 1f/ 700f;
+	private const float timeFreq = 1f/ 1200f;
 
 	public GameObject mist;
 	public GameObject mistLow;

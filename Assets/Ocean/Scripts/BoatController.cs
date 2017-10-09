@@ -19,7 +19,7 @@ public class BoatController : Boyancy{
     [Header("Xinput :")]
     x360_Gamepad gamepad;
     [SerializeField] private GameObject Scope;
-    [SerializeField] private int controlNumber;
+    [SerializeField] public int controlNumber;
 
     [Header("Other :")]
 	[SerializeField] private List<GameObject> m_motors;
