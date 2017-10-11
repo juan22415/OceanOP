@@ -19,6 +19,8 @@ public class BoatController : Boyancy{
     [Header("Xinput :")]
     x360_Gamepad gamepad;
     [SerializeField] private GameObject Scope;
+    [SerializeField] private GameObject Scopecenter;
+
     [SerializeField] public int controlNumber;
 
     [Header("Other :")]
@@ -29,8 +31,8 @@ public class BoatController : Boyancy{
     private Rigidbody m_rigidbody;
 	private Vector3 m_androidInputInit;
 
-    public float angleX;
-    public float angleY;
+    public float posX;
+    public float posY;
 
     
 
@@ -62,17 +64,16 @@ public class BoatController : Boyancy{
         else
             setInputs(gamepad.GetTrigger_R, gamepad.GetStick_L().X);
 
-            angleX =Scope.transform.eulerAngles.x - gamepad.GetStick_R().Y;
-            angleY =Scope.transform.eulerAngles.y + gamepad.GetStick_R().X;
+            posX =Scope.transform.localPosition.x + gamepad.GetStick_R().X*2f;
+            posY =Scope.transform.localPosition.y + gamepad.GetStick_R().Y*2f;
 
-            Scope.transform.eulerAngles = new Vector3(angleX, angleY);
-
-
+            Scope.transform.localPosition = new Vector3(posX, posY);
 
 
-
-
-
+        if (gamepad.GetStick_L().X == 0 && gamepad.GetStick_L().Y ==0)
+        {
+           Scope.transform.localPosition = Vector3.Lerp(Scope.transform.localPosition, Scopecenter.transform.localPosition, Time.deltaTime/2);
+        }
 
     }
 
