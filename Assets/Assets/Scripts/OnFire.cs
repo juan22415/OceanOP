@@ -18,17 +18,18 @@ public class OnFire : MonoBehaviour {
     [SerializeField]
     private float duration = 1.0F;
     private float targetIntensity=4f;
+    private x360_Gamepad gamepad;
 
     private void Start()
     {
         control = GetComponent<BoatController>();
+        gamepad = GamepadManager.Instance.GetGamepad(control.controlNumber);
     }
     private void OnCollisionEnter(Collision collision)
-    {
-      
-        
+    {       
                 if (collision.gameObject.CompareTag("bullet"))
                 {
+                    gamepad.AddRumble(1, new Vector2(0.8f, 0.8f), 2);
                     counterState++;
                     if(counterState==1)
                     {

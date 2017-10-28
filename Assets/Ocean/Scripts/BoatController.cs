@@ -2,19 +2,22 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class BoatController : Boyancy{
+public class BoatController : Boyancy
+{
 
     [Header("Physic :")]
-	[SerializeField] private float m_accelerationFactor = 2.0F;
-	[SerializeField] private float m_turningFactor = 2.0F;
-	[SerializeField] private float m_accelerationTorqueFactor = 35F;
-	[SerializeField] private float m_turningTorqueFactor = 35F;
+    [SerializeField]
+    private float m_accelerationFactor = 2.0F;
+    [SerializeField] private float m_turningFactor = 2.0F;
+    [SerializeField] private float m_accelerationTorqueFactor = 35F;
+    [SerializeField] private float m_turningTorqueFactor = 35F;
 
-	[Header("Audio :")]
-	[SerializeField] private bool m_enableAudio = true;
-	//[SerializeField] private AudioSource m_boatAudioSource;
-	[SerializeField] private float m_boatAudioMinPitch = 0.4F;
-	[SerializeField] private float m_boatAudioMaxPitch = 1.2F;
+    [Header("Audio :")]
+    [SerializeField]
+    private bool m_enableAudio = true;
+    //[SerializeField] private AudioSource m_boatAudioSource;
+    [SerializeField] private float m_boatAudioMinPitch = 0.4F;
+    [SerializeField] private float m_boatAudioMaxPitch = 1.2F;
 
     [Header("Xinput :")]
     x360_Gamepad gamepad;
@@ -24,17 +27,20 @@ public class BoatController : Boyancy{
     [SerializeField] public int controlNumber;
 
     [Header("Other :")]
-	[SerializeField] private List<GameObject> m_motors;
+    [SerializeField]
+    private List<GameObject> m_motors;
 
-	private float m_verticalInput = 0F;
-	private float m_horizontalInput = 0F;
+    private float m_verticalInput = 0F;
+    private float m_horizontalInput = 0F;
     private Rigidbody m_rigidbody;
-	private Vector3 m_androidInputInit;
+    private Vector3 m_androidInputInit;
 
-    public float posX;
-    public float posY;
+    private float posX;
+    private float posY;
 
-    
+    private bool canRumble;
+
+
 
     protected override void Start()
     {
@@ -44,89 +50,111 @@ public class BoatController : Boyancy{
         m_rigidbody.drag = 1;
         m_rigidbody.angularDrag = 1;
 
-		initPosition ();
-	}
+        initPosition();
+    }
 
-	public void initPosition()
-	{
-		#if UNITY_ANDROID
+    public void initPosition()
+    {
+#if UNITY_ANDROID
 		m_androidInputInit = Input.acceleration;
-		#endif
-	}
+#endif
+    }
 
-	void Update()
-	{
+    void Update()
+    {
         gamepad = GamepadManager.Instance.GetGamepad(controlNumber);
-        if(gamepad.GetTrigger_L > 0)
 
-             setInputs(-gamepad.GetTrigger_L, gamepad.GetStick_L().X);
+        Movement();
 
-        else
-            setInputs(gamepad.GetTrigger_R, gamepad.GetStick_L().X);
-
-            posX =Scope.transform.localPosition.x + gamepad.GetStick_R().X*2f;
-            posY =Scope.transform.localPosition.y + gamepad.GetStick_R().Y*2f;
-
-            Scope.transform.localPosition = new Vector3(posX, posY);
-
-
-        if (gamepad.GetStick_L().X == 0 && gamepad.GetStick_L().Y ==0)
+        if (gamepad.GetStick_L().X == 0 && gamepad.GetStick_L().Y == 0)
         {
-           Scope.transform.localPosition = Vector3.Lerp(Scope.transform.localPosition, Scopecenter.transform.localPosition, Time.deltaTime/2);
+            Scope.transform.localPosition = Vector3.Lerp(Scope.transform.localPosition, Scopecenter.transform.localPosition, Time.deltaTime / 2);
         }
 
     }
 
-	public void setInputs(float iVerticalInput, float iHorizontalInput)
-	{
-		m_verticalInput = iVerticalInput;
-		m_horizontalInput = iHorizontalInput;
-	}
+    public void Movement()
+    {
+        if (gamepad.GetTrigger_L > 0)
+        {
+            setInputs(-gamepad.GetTrigger_L, gamepad.GetStick_L().X);
+        }
+        else if (gamepad.GetTrigger_R > 0.2)
+        {
+            Debug.Log("entra");
+            setInputs(gamepad.GetTrigger_R, gamepad.GetStick_L().X);
+            if (m_rigidbody.velocity.sqrMagnitude < 40 && canRumble == true)
+            {
+                Debug.Log("entra a rumble");
+                gamepad.AddRumble(1, new Vector2(0.8f, 0.8f), 2);
+                canRumble = false;
+            }        
+        }
 
-	protected override void FixedUpdate()
-	{
-		base.FixedUpdate();
+        else 
+        {
+            setInputs(0, gamepad.GetStick_L().X);
+            canRumble = true;
+        }
 
-      
-		m_rigidbody.AddRelativeForce(Vector3.forward * m_verticalInput * m_accelerationFactor);
+        posX = Scope.transform.localPosition.x + gamepad.GetStick_R().X * 2f;
+        posY = Scope.transform.localPosition.y + gamepad.GetStick_R().Y * 2f;
+        Scope.transform.localPosition = new Vector3(posX, posY);
+    }
+
+
+
+
+    public void setInputs(float iVerticalInput, float iHorizontalInput)
+    {
+        m_verticalInput = iVerticalInput;
+        m_horizontalInput = iHorizontalInput;
+    }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+
+
+        m_rigidbody.AddRelativeForce(Vector3.forward * m_verticalInput * m_accelerationFactor);
         m_rigidbody.AddRelativeTorque(
-			m_verticalInput * -m_accelerationTorqueFactor,
-			m_horizontalInput * m_turningFactor,
-			m_horizontalInput * -m_turningTorqueFactor
+            m_verticalInput * -m_accelerationTorqueFactor,
+            m_horizontalInput * m_turningFactor,
+            m_horizontalInput * -m_turningTorqueFactor
         );
 
-        if(m_motors.Count > 0)
+        if (m_motors.Count > 0)
         {
             float motorRotationAngle = 0F;
-			float motorMaxRotationAngle = 70;
+            float motorMaxRotationAngle = 70;
 
-			motorRotationAngle = - m_horizontalInput * motorMaxRotationAngle;
+            motorRotationAngle = -m_horizontalInput * motorMaxRotationAngle;
 
             foreach (GameObject motor in m_motors)
             {
-				float currentAngleY = motor.transform.localEulerAngles.y;
-				if (currentAngleY > 180.0f)
-					currentAngleY -= 360.0f;
+                float currentAngleY = motor.transform.localEulerAngles.y;
+                if (currentAngleY > 180.0f)
+                    currentAngleY -= 360.0f;
 
-				float localEulerAngleY = Mathf.Lerp(currentAngleY, motorRotationAngle, Time.deltaTime * 10);
-				motor.transform.localEulerAngles = new Vector3(
-					motor.transform.localEulerAngles.x,
-					localEulerAngleY,
-					motor.transform.localEulerAngles.z
-				);
+                float localEulerAngleY = Mathf.Lerp(currentAngleY, motorRotationAngle, Time.deltaTime * 10);
+                motor.transform.localEulerAngles = new Vector3(
+                    motor.transform.localEulerAngles.x,
+                    localEulerAngleY,
+                    motor.transform.localEulerAngles.z
+                );
             }
         }
 
-		//if (m_enableAudio && m_boatAudioSource != null) 
-		//{
-  //          m_boatAudioSource.enabled = m_verticalInput != 0;
+        //if (m_enableAudio && m_boatAudioSource != null) 
+        //{
+        //          m_boatAudioSource.enabled = m_verticalInput != 0;
 
-  //          float pitchLevel = m_verticalInput * m_boatAudioMaxPitch;
-		//	if (pitchLevel < m_boatAudioMinPitch)
-		//		pitchLevel = m_boatAudioMinPitch;
-		//	float smoothPitchLevel = Mathf.Lerp(m_boatAudioSource.pitch, pitchLevel, Time.deltaTime);
+        //          float pitchLevel = m_verticalInput * m_boatAudioMaxPitch;
+        //	if (pitchLevel < m_boatAudioMinPitch)
+        //		pitchLevel = m_boatAudioMinPitch;
+        //	float smoothPitchLevel = Mathf.Lerp(m_boatAudioSource.pitch, pitchLevel, Time.deltaTime);
 
-		//	m_boatAudioSource.pitch = smoothPitchLevel;
-		//}
+        //	m_boatAudioSource.pitch = smoothPitchLevel;
+        //}
     }
 }
