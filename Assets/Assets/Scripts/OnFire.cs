@@ -9,7 +9,8 @@ public class OnFire : MonoBehaviour {
     public GameObject explosionBarco;
     public AudioSource _audioSource;
     public BoatController control;
-    public int counterState;
+    public int counterState=-1;
+    public Rigidbody rb;
     
 
     public Light firstStateLight;
@@ -25,13 +26,34 @@ public class OnFire : MonoBehaviour {
         control = GetComponent<BoatController>();
         gamepad = GamepadManager.Instance.GetGamepad(control.controlNumber);
     }
+    private void Update()
+    {
+        if (counterState == 0)
+        {
+            rb.useGravity = true;
+            control.enabled = true;
+            firstState.SetActive(false);
+            secondState.SetActive(false);
+            finalState.SetActive(false);
+
+            if (control.controlNumber == 1)
+            {
+                GameManager.Instance.player1flag = 0;
+            }
+            if (control.controlNumber == 2)
+            {
+                GameManager.Instance.player2flag = 0;
+            }
+        }
+    }
     private void OnCollisionEnter(Collision collision)
     {       
                 if (collision.gameObject.CompareTag("bullet"))
                 {
                     gamepad.AddRumble(1, new Vector2(0.8f, 0.8f), 2);
                     counterState++;
-                    if(counterState==1)
+                   
+                     if(counterState==1)
                     {
                         firstState.SetActive(true);
                         firstStateLight.intensity = Mathf.PingPong(Time.time, targetIntensity);
@@ -55,6 +77,9 @@ public class OnFire : MonoBehaviour {
                      GameObject explosion= Instantiate(explosionBarco,transform.position,transform.rotation);
                      Destroy(explosion, 2f);
                      StartCoroutine(Example());
+                     rb.useGravity = false;
+                     control.enabled = false;
+
                     if (control.controlNumber == 1)
                     {
                         GameManager.Instance.player1flag = 1;
@@ -63,7 +88,7 @@ public class OnFire : MonoBehaviour {
                     {
                         GameManager.Instance.player2flag = 1;
                     }
-                         counterState++;
+                         counterState=0;
                     }
                 
                 }
@@ -73,7 +98,7 @@ public class OnFire : MonoBehaviour {
     IEnumerator Example()
     {
        
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(10);
     
     }
 }
