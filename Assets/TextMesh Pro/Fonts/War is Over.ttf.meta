@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 8b2e24a515f6345439396a07ad24481c
+timeCreated: 1509310215
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: War is Over
+  fontNames:
+  - War is Over
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
