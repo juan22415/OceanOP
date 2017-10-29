@@ -26,22 +26,7 @@ public class GameManager : MonoBehaviour {
 
     private void Update()
     {
-        if(player1flag==1)
-        {
-            player1.SetActive(false);
-        }
-        if (player2flag == 1)
-        {
-            player2.SetActive(false);
-        }
-        if (player1flag == 0)
-        {
-            player1.SetActive(true);
-        }
-        if (player2flag == 0)
-        {
-            player2.SetActive(true);
-        }
+     
 
     }
 }

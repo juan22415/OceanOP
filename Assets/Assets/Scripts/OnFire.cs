@@ -76,9 +76,10 @@ public class OnFire : MonoBehaviour {
                     
                      GameObject explosion= Instantiate(explosionBarco,transform.position,transform.rotation);
                      Destroy(explosion, 2f);
-                     StartCoroutine(Example());
-                     rb.useGravity = false;
-                     control.enabled = false;
+                      rb.useGravity = false;
+                          control.enabled = false;
+                        StartCoroutine(Example());
+                   
 
                     if (control.controlNumber == 1)
                     {
