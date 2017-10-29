@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class RampImpulse : MonoBehaviour {
 
+    [SerializeField]
+    int force;
 
-
-    private void OnCollisionStay(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
 
-            collision.gameObject.GetComponent<Rigidbody>().AddForce(collision.gameObject.transform.forward * 3,ForceMode.Impulse);
-
+            other.gameObject.GetComponent<Rigidbody>().AddForce(other.gameObject.transform.forward * force);
     }
 }

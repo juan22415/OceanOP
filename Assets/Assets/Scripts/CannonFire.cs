@@ -11,14 +11,13 @@ public class CannonFire : MonoBehaviour {
     [SerializeField] private int controlNumber;
     [SerializeField] AudioClip shootSound;
     private x360_Gamepad gamepad;
+    [SerializeField]
     AudioSource _audioSource;
 
     // Use this for initialization
     void Start () {
 
         gamepad = GamepadManager.Instance.GetGamepad(controlNumber);
-        _audioSource = GetComponent<AudioSource>();
-      
 
 
     }
