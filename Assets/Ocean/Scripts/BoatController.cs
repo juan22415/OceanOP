@@ -15,7 +15,7 @@ public class BoatController : Boyancy
     [Header("Audio :")]
     [SerializeField]
     private bool m_enableAudio = true;
-    //[SerializeField] private AudioSource m_boatAudioSource;
+    [SerializeField] private AudioSource m_boatAudioSource;
     [SerializeField] private float m_boatAudioMinPitch = 0.4F;
     [SerializeField] private float m_boatAudioMaxPitch = 1.2F;
 
@@ -145,16 +145,16 @@ public class BoatController : Boyancy
             }
         }
 
-        //if (m_enableAudio && m_boatAudioSource != null) 
-        //{
-        //          m_boatAudioSource.enabled = m_verticalInput != 0;
+        if (m_enableAudio && m_boatAudioSource != null) 
+        {
+                  //m_boatAudioSource.enabled = m_verticalInput != 0;
 
-        //          float pitchLevel = m_verticalInput * m_boatAudioMaxPitch;
-        //	if (pitchLevel < m_boatAudioMinPitch)
-        //		pitchLevel = m_boatAudioMinPitch;
-        //	float smoothPitchLevel = Mathf.Lerp(m_boatAudioSource.pitch, pitchLevel, Time.deltaTime);
+                  float pitchLevel = m_verticalInput * m_boatAudioMaxPitch;
+        	if (pitchLevel < m_boatAudioMinPitch)
+        		pitchLevel = m_boatAudioMinPitch;
+        	float smoothPitchLevel = Mathf.Lerp(m_boatAudioSource.pitch, pitchLevel, Time.deltaTime);
 
-        //	m_boatAudioSource.pitch = smoothPitchLevel;
-        //}
+        	m_boatAudioSource.pitch = smoothPitchLevel;
+        }
     }
 }
