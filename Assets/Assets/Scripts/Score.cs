@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class Score : MonoBehaviour {
 
     public Image colorimagen;
-    public Text scoreText;
+    //public Text scoreText;
     public Text winnerText;
 
     public int score;
@@ -19,7 +19,7 @@ public class Score : MonoBehaviour {
         {
             score++;
             colorimagen.fillAmount += 0.33f;
-            scoreText.text = score.ToString();
+            //scoreText.text = score.ToString();
             CheckWinner(score);
         }
     }

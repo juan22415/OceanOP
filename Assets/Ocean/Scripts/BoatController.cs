@@ -45,7 +45,6 @@ public class BoatController : Boyancy
     protected override void Start()
     {
         base.Start();
-
         m_rigidbody = GetComponent<Rigidbody>();
         m_rigidbody.drag = 1;
         m_rigidbody.angularDrag = 1;
