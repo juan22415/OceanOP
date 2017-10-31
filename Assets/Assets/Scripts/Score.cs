@@ -8,7 +8,7 @@ public class Score : MonoBehaviour {
 
     public Image colorimagen;
     //public Text scoreText;
-    public Text winnerText;
+    public GameObject winnerText;
 
     public int score;
 
