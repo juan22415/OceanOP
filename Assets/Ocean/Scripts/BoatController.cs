@@ -39,6 +39,8 @@ public class BoatController : Boyancy
     private float posY;
 
     private bool canRumble;
+    private float xLimit = 60;
+    private float yLimit = 5;
 
 
 
@@ -80,24 +82,43 @@ public class BoatController : Boyancy
         }
         else if (gamepad.GetTrigger_R > 0.2)
         {
-            Debug.Log("entra");
             setInputs(gamepad.GetTrigger_R, gamepad.GetStick_L().X);
             if (m_rigidbody.velocity.sqrMagnitude < 40 && canRumble == true)
             {
-                Debug.Log("entra a rumble");
                 gamepad.AddRumble(1, new Vector2(0.8f, 0.8f), 2);
                 canRumble = false;
-            }        
+            }
         }
 
-        else 
+        else
         {
             setInputs(0, gamepad.GetStick_L().X);
             canRumble = true;
         }
 
+
         posX = Scope.transform.localPosition.x + gamepad.GetStick_R().X * 2f;
+        Mathf.Clamp(Scope.transform.localPosition.x, 0, 30);
         posY = Scope.transform.localPosition.y + gamepad.GetStick_R().Y * 2f;
+
+        if (posX > xLimit)
+        {
+            posX = xLimit;
+        }
+
+        if (posX < -xLimit)
+        {
+            posX = -xLimit;
+        }
+
+        if (posY < -yLimit)
+        {
+            posY = -yLimit;
+        }
+        if (posY > yLimit + 10)
+        {
+            posY = yLimit + 10;
+        }
         Scope.transform.localPosition = new Vector3(posX, posY);
     }
 
@@ -144,16 +165,16 @@ public class BoatController : Boyancy
             }
         }
 
-        if (m_enableAudio && m_boatAudioSource != null) 
+        if (m_enableAudio && m_boatAudioSource != null)
         {
-                  //m_boatAudioSource.enabled = m_verticalInput != 0;
+            //m_boatAudioSource.enabled = m_verticalInput != 0;
 
-                  float pitchLevel = m_verticalInput * m_boatAudioMaxPitch;
-        	if (pitchLevel < m_boatAudioMinPitch)
-        		pitchLevel = m_boatAudioMinPitch;
-        	float smoothPitchLevel = Mathf.Lerp(m_boatAudioSource.pitch, pitchLevel, Time.deltaTime);
+            float pitchLevel = m_verticalInput * m_boatAudioMaxPitch;
+            if (pitchLevel < m_boatAudioMinPitch)
+                pitchLevel = m_boatAudioMinPitch;
+            float smoothPitchLevel = Mathf.Lerp(m_boatAudioSource.pitch, pitchLevel, Time.deltaTime);
 
-        	m_boatAudioSource.pitch = smoothPitchLevel;
+            m_boatAudioSource.pitch = smoothPitchLevel;
         }
     }
 }
