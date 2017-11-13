@@ -23,7 +23,7 @@ public class BoatController : Boyancy
     x360_Gamepad gamepad;
     [SerializeField] private GameObject Scope;
     [SerializeField] private GameObject Scopecenter;
-
+    [SerializeField] private GameObject turnUptext;
     [SerializeField] public int controlNumber;
 
     [Header("Other :")]
@@ -96,6 +96,16 @@ public class BoatController : Boyancy
             canRumble = true;
         }
 
+        if (transform.localEulerAngles.z>170 && transform.localEulerAngles.z < 190)
+        {
+            turnUptext.SetActive(true);
+            if (gamepad.GetButtonDown("A"))
+            {
+                turnUptext.SetActive(false);
+                transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y,0);
+
+            }
+        }
 
         posX = Scope.transform.localPosition.x + gamepad.GetStick_R().X * 2f;
         Mathf.Clamp(Scope.transform.localPosition.x, 0, 30);
